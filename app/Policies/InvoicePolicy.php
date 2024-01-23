@@ -2,7 +2,9 @@
 
 namespace App\Policies;
 
+use App\Http\Requests\InvoiceRequest;
 use App\Models\Invoice;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class InvoicePolicy
@@ -17,36 +19,16 @@ class InvoicePolicy
 
     public function create()
     {
-        if (Gate::allows('role', 'employee')) {
+        if (Gate::allows('role','employee')) {
             return true;
         }
     }
 
-    public function update()
-    {
-        if (Gate::allows('isInvoiceOwner')) {
-            return true;
-        }
-    }
-
-    public function delete()
-    {
-        if (Gate::allows('isInvoiceOwner')) {
-            return true;
-        }
-    }
-
-    public function view($invoice)
+    public function IsOwner($invoice)
     {
         if (Gate::allows('isInvoiceOwner',$invoice)) {
             return true;
         }
     }
 
-    public function viewAny($invoice)
-    {
-        if (Gate::allows('isInvoiceOwner',$invoice)) {
-            return true;
-        }
-    }
 }

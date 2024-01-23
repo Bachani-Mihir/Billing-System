@@ -11,10 +11,6 @@ class InvoicesController extends Controller
 {
     public function index()
     {
-        $this->authorize('viewAny', Invoice::class);
-
-        $user = auth()->user();
-
         $invoices = Invoice::where('user_id', Auth::user()->id)->get();
 
         return $invoices;
@@ -22,7 +18,7 @@ class InvoicesController extends Controller
 
     public function show($invoice)
     {
-        $this->authorize('view', Invoice::class);
+        $this->authorize('isInvoiceOwner', $invoice);
 
         $invoice = Invoice::where('id', $invoice)->first();
 
@@ -31,27 +27,31 @@ class InvoicesController extends Controller
 
     public function store(InvoiceRequest $request)
     {
-        $this->authorize('create', Invoice::class);
+        $this->authorize('create',Invoice::class);
 
         $invoice = Auth::user()->invoices()->create($request->validated());
 
         return $invoice;
     }
 
-    public function update($invoice)
+    public function update(InvoiceRequest $request,$invoice_id)
     {
-        $this->authorize('update', Invoice::class);
+        $invoice = Invoice::find($invoice_id);
 
-        $updated_invoice = Invoice::where('id', $invoice)->update();
+        $this->authorize('isInvoiceOwner', $invoice);
+
+        $updated_invoice = Invoice::where('id',$invoice_id)->update($request->validated());
 
         return $updated_invoice;
     }
 
-    public function destroy($invoice)
+    public function destroy($invoice_id)
     {
-        $this->authorize('delete', Invoice::class);
+        $invoice = Invoice::find($invoice_id);
 
-        $deleted_invoice = Invoice::where('id', $invoice)->delete();
+        $this->authorize('isInvoiceOwner', $invoice);
+
+        $deleted_invoice = Invoice::where('id', $invoice_id)->delete();
 
         return $deleted_invoice;
     }

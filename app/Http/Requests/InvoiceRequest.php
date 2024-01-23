@@ -21,13 +21,20 @@ class InvoiceRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'business_id' => 'required|exists:businesses,id',
             'client_id' => 'required|exists:clients,id',
-            'invoice_number' => 'required|unique:invoices,invoice_number',
             'total_amount' => 'required|numeric|min:0',
             'due_date' => 'required|date',
             'status' => 'required|in:draft,sent,paid',
         ];
+
+        if ($this->isMethod('put')) {
+            $rules['invoice_number'] = 'required|exists:invoices,invoice_number';
+        } else {
+            $rules['invoice_number'] = 'required|unique:invoices,invoice_number';
+        }
+
+        return $rules;
     }
 }
