@@ -14,26 +14,19 @@ class Invoice extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'client_id',
-        'employee_id',
-    ];
 
     protected $guarded = ['id'];
 
     /**
-     * Get the invoice that owns the client.
+     * Get the invoice that owns the user.
      */
-    public function clients()
+    public function user()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsToMany(User::class);
     }
 
-    /**
-     * Get the invoice that owns the employee.
-     */
-    public function employees()
+    public function business()
     {
-        return $this->belongsTo(Employee::class);
+        return $this->belongsTo(Business::class);
     }
 }

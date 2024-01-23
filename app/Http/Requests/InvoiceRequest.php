@@ -22,8 +22,8 @@ class InvoiceRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'business_id' => 'required|exists:businesses,id',
             'client_id' => 'required|exists:clients,id',
-            'employee_id' => 'required|exists:employees,id',
             'invoice_number' => 'required|unique:invoices,invoice_number',
             'total_amount' => 'required|numeric|min:0',
             'due_date' => 'required|date',

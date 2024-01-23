@@ -17,13 +17,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-    ];
 
+    protected $guarded = ['id'];
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -44,19 +39,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    /**
-     * Get the clients associated with the user.
-     */
-    public function clients()
-    {
-        return $this->hasMany(Client::class);
+    public function invoices(){
+        return $this->hasMany(Invoice::class);
     }
 
-    /**
-     * Get the employees associated with the user.
-     */
-    public function employees()
-    {
-        return $this->hasMany(Employee::class);
+    public function businesses(){
+        return $this->belongsToMany(Business::class);
     }
 }

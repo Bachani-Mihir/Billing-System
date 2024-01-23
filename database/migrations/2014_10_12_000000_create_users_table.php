@@ -13,13 +13,14 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('business_id');
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
-            $table->enum('role', ['user', 'admin', 'client', 'employee'])->default('user');
+            $table->enum('role', ['user', 'admin', 'client', 'employee', 'owner'])->default('user');
         });
     }
 

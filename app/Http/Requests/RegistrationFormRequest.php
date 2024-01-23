@@ -11,7 +11,7 @@ class RegistrationFormRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,9 +22,10 @@ class RegistrationFormRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
+            'business_id' => 'required|exists:businesses,id',
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string|min:2',
             'role' => 'required|in:user,admin,client,employee',
         ];
 

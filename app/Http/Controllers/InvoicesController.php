@@ -15,13 +15,7 @@ class InvoicesController extends Controller
 
         $user = auth()->user();
 
-        if ($user->role == 'employee') {
-            $invoices = Invoice::where('employee_id', Auth::user()->id)->get();
-        } elseif ($user->role == 'client') {
-            $invoices = Invoice::where('client_id', Auth::user()->id)->get();
-        } else {
-            $invoices = Invoice::all();
-        }
+        $invoices = Invoice::where('user_id', Auth::user()->id)->get();
 
         return $invoices;
     }
@@ -39,9 +33,7 @@ class InvoicesController extends Controller
     {
         $this->authorize('create', Invoice::class);
 
-        $employee = Auth::user()->employees()->first();
-
-        $invoice = $employee->invoices()->create($request->validated());
+        $invoice = Auth::user()->invoices()->create($request->validated());
 
         return $invoice;
     }
