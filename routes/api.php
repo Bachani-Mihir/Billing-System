@@ -21,8 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-    // Authentication
-    //----------------------------------
+// Authentication
+//----------------------------------WW
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/register', [RegisterController::class, 'store']);
@@ -30,8 +30,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/login', [SessionController::class, 'valid']);
 });
 
-    // Invoices
-    //----------------------------------
+// Invoices
+//----------------------------------
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('invoices', InvoicesController::class);
