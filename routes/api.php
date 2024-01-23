@@ -3,6 +3,7 @@
 use App\Http\Controllers\InvoicesController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,4 +36,11 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('invoices', InvoicesController::class);
+});
+
+// Users
+//----------------------------------
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('user', UserController::class);
 });
