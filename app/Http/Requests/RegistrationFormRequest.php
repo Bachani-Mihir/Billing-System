@@ -24,9 +24,9 @@ class RegistrationFormRequest extends FormRequest
         $rules = [
             'business_id' => 'required|exists:businesses,id',
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email',
             'password' => 'required|string|min:2',
-            'role' => 'required|in:user,admin,client,employee',
+            'role' => 'required|in:user,admin,client,employee,owner',
         ];
 
         return $rules;
