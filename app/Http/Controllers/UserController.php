@@ -4,16 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $this->authorize('IsAdmin',User::class);
+        $this->authorize('IsAdmin', User::class);
 
-        $users = User:: all()->where('business_id',Auth::user()->business_id);
+        $users = User::all()->where('business_id', Auth::user()->business_id);
 
         return $users;
     }
@@ -22,7 +21,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($user_id);
 
-        $this->authorize('IsAdmin',User::class);
+        $this->authorize('IsAdmin', User::class);
 
         $user = User::where('id', $user->id)->first();
 
@@ -31,18 +30,18 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-        $this->authorize('IsAdmin',User::class);
+        $this->authorize('IsAdmin', User::class);
 
         $user = User::create($request->validated());
 
         return $user;
     }
 
-    public function update(UserRequest $request,$user_id)
+    public function update(UserRequest $request, $user_id)
     {
         $user = User::findOrFail($user_id);
 
-        $this->authorize('IsAdmin',User::class);
+        $this->authorize('IsAdmin', User::class);
 
         $updated_user = User::where('id', $user->id)->update($request->validated());
 
@@ -51,7 +50,7 @@ class UserController extends Controller
 
     public function destroy($user_id)
     {
-        $this->authorize('IsAdmin',User::class);
+        $this->authorize('IsAdmin', User::class);
 
         $deleted_user = User::where('id', $user_id)->delete();
 

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Business;
 use App\Models\Client;
 use App\Models\Employee;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,10 +20,13 @@ class InvoiceFactory extends Factory
     public function definition(): array
     {
         return [
+            'business_id' => function () {
+                return Business::factory()->create()->id;
+            },
             'client_id' => function () {
                 return Client::factory()->create()->id;
             },
-            'employee_id' => function () {
+            'user_id' => function () {
                 return Employee::factory()->create()->id;
             },
             'invoice_number' => $this->faker->unique()->numberBetween(001, 999),

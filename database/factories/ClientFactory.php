@@ -21,7 +21,6 @@ class ClientFactory extends Factory
             'user_id' => function () {
                 return User::factory()->create()->id;
             },
-            'company_name' => $this->faker->company,
             'contact_person' => $this->faker->name,
             'phone_number' => $this->faker->phoneNumber,
         ];

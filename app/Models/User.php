@@ -17,8 +17,8 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-
     protected $guarded = ['id'];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -39,11 +39,13 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function invoices(){
+    public function invoices()
+    {
         return $this->hasMany(Invoice::class);
     }
 
-    public function businesses(){
+    public function businesses()
+    {
         return $this->belongsToMany(Business::class);
     }
 }

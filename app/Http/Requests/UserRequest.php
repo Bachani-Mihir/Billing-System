@@ -30,7 +30,7 @@ class UserRequest extends FormRequest
         if ($this->isMethod('post')) {
             $rules['email'] = 'required|email|unique:users,email';
             $rules['password'] = 'required|string|min:2';
-        }else{
+        } else {
             $rules['email'] = 'required|email';
         }
 
