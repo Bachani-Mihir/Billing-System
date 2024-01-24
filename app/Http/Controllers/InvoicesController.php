@@ -4,30 +4,31 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\InvoiceRequest;
 use App\Models\Invoice;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class InvoicesController extends Controller
 {
     public function index()
     {
+        $this->authorize('IsAllowed', [Invoice::class,'owner']);
+
         $invoices = Invoice::where('user_id', Auth::user()->id)->get();
 
         return $invoices;
     }
 
-    public function show($invoice)
+    public function show($invoice_id)
     {
-        $this->authorize('isInvoiceOwner', $invoice);
+        $invoice = Invoice::where('id', $invoice_id)->first();
 
-        $invoice = Invoice::where('id', $invoice)->first();
+        $this->authorize('isInvoiceOwner', $invoice);
 
         return $invoice;
     }
 
     public function store(InvoiceRequest $request)
     {
-        $this->authorize('create',Invoice::class);
+        $this->authorize('IsAllowed', [Invoice::class,'employee']);
 
         $invoice = Auth::user()->invoices()->create($request->validated());
 
@@ -38,9 +39,9 @@ class InvoicesController extends Controller
     {
         $invoice = Invoice::find($invoice_id);
 
-        $this->authorize('isInvoiceOwner', $invoice);
+        $this->authorize('isOwner', $invoice);
 
-        $updated_invoice = Invoice::where('id',$invoice_id)->update($request->validated());
+        $updated_invoice = Invoice::where('id', $invoice_id)->update($request->validated());
 
         return $updated_invoice;
     }
@@ -55,4 +56,14 @@ class InvoicesController extends Controller
 
         return $deleted_invoice;
     }
+
+    public function getInvoicesForBusiness($business_id)
+    {
+        $this->authorize('IsBusinessOwner' , [Invoice::class , $business_id]);
+
+        $invoices = Invoice::where('business_id', $business_id)->get();
+
+        return $invoices;
+    }
+
 }

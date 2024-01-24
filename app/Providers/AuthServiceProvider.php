@@ -28,12 +28,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('role', function ($user,$role) {
-            return $user->role === $role;
+        Gate::define('role', function (User $user, $ExpectedRole) {
+            return $user->role === $ExpectedRole && ($user->business_id == request()->business_id);
         });
 
-        Gate::define('isInvoiceOwner', function ($invoice) {
-            return (Auth::user()->role === 'employee' && (Auth::user()->user_id == $invoice->user_id));
+        Gate::define('isInvoiceOwner', function (User $user , $invoice) {
+            return $user->role === 'employee' && ($user->id === $invoice->user_id);
+        });
+
+        Gate::define('IsBusinessOwner', function (User $user , $business_id) {
+            return $user->role === 'owner' && ($user->business_id == $business_id);
         });
     }
 }
