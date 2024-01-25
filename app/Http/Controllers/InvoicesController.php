@@ -34,7 +34,11 @@ class InvoicesController extends Controller
     {
         $this->authorize('IsAllowed', [Invoice::class, 'employee']);
 
-        $invoice = Auth::user()->invoices()->create($request->validated());
+        $invoice_data = $request->validated();
+
+        $invoice_data['business_id'] = Auth::user()->business_id;
+        // $invoice = Auth::user()->businesses()->invoices()->create($invoice_data);
+        $invoice = Auth::user()->invoices()->create($invoice_data);
 
         return $invoice;
     }
@@ -47,7 +51,9 @@ class InvoicesController extends Controller
 
         $this->authorize('IsInvoiceOwner', $invoice);
 
-        $updated_invoice = Invoice::where('id', $invoice_id)->update($request->validated());
+        $updated_invoice = Invoice::where('id', $invoice_id)
+                        ->update($request->validated()
+                        ->except('business_id'));
 
         return $updated_invoice;
     }

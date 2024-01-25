@@ -31,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('IsInvoiceOwner', function (User $user, $invoice) {
-            return $user->role === 'employee' && ($user->id === $invoice->user_id);
+            return ($user->id === $invoice->user_id) && ($user->business_id == $invoice->business_id);
         });
     }
 }

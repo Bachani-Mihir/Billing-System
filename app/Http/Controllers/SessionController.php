@@ -13,8 +13,6 @@ class SessionController extends Controller
             $user = $request->authenticate();
 
             if ($user) {
-                Auth::guard('web')->login($user);
-
                 $tokenName = ucfirst($user->role).'Token';
 
                 $token = $request->user()->createToken($tokenName, [$user->role])->plainTextToken;
