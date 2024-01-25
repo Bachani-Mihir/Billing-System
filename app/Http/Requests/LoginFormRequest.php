@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class LoginFormRequest extends FormRequest
 {
@@ -29,10 +30,11 @@ class LoginFormRequest extends FormRequest
 
     public function authenticate()
     {
-        $credentials = $this->only('email', 'password');
+        $credentials = $this->only('email', 'password', 'business_id');
+
         $remember = request()->filled('remember');
 
-        if (@auth()->attempt($credentials, $remember)) {
+        if (Auth::guard('web')->attempt($credentials, $remember)) {
             return auth()->user();
         } else {
             return false;
