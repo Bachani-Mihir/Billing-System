@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Authentication
-//----------------------------------WW
+//----------------------------------
 
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/register', [RegisterController::class, 'store']);

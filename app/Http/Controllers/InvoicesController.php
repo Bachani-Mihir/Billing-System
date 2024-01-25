@@ -51,9 +51,7 @@ class InvoicesController extends Controller
 
         $this->authorize('IsInvoiceOwner', $invoice);
 
-        $updated_invoice = Invoice::where('id', $invoice_id)
-                        ->update($request->validated()
-                        ->except('business_id'));
+        $updated_invoice = Invoice::where('id', $invoice_id)->update($request->validated());
 
         return $updated_invoice;
     }
