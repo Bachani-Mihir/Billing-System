@@ -4,10 +4,8 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 
-use App\Models\Invoice;
 use App\Models\User;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -29,15 +27,11 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('role', function (User $user, $ExpectedRole) {
-            return $user->role === $ExpectedRole && ($user->business_id == request()->business_id);
+            return $user->role === $ExpectedRole;
         });
 
-        Gate::define('isInvoiceOwner', function (User $user , $invoice) {
+        Gate::define('IsInvoiceOwner', function (User $user, $invoice) {
             return $user->role === 'employee' && ($user->id === $invoice->user_id);
-        });
-
-        Gate::define('IsBusinessOwner', function (User $user , $business_id) {
-            return $user->role === 'owner' && ($user->business_id == $business_id);
         });
     }
 }

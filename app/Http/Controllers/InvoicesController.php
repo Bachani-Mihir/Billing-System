@@ -10,36 +10,42 @@ class InvoicesController extends Controller
 {
     public function index()
     {
-        $this->authorize('IsAllowed', [Invoice::class,'owner']);
+        $this->authorize('IsAllowed', [Invoice::class, 'employee']);
 
-        $invoices = Invoice::where('user_id', Auth::user()->id)->get();
+        $invoices = Invoice::where('business_id', Auth::user()->business_id)
+                    ->where('user_id', Auth::user()->id)
+                    ->get();
 
         return $invoices;
     }
 
     public function show($invoice_id)
     {
+        $this->authorize('IsAllowed', [Invoice::class, 'employee']);
+
         $invoice = Invoice::where('id', $invoice_id)->first();
 
-        $this->authorize('isInvoiceOwner', $invoice);
+        $this->authorize('IsInvoiceOwner', $invoice);
 
         return $invoice;
     }
 
     public function store(InvoiceRequest $request)
     {
-        $this->authorize('IsAllowed', [Invoice::class,'employee']);
+        $this->authorize('IsAllowed', [Invoice::class, 'employee']);
 
         $invoice = Auth::user()->invoices()->create($request->validated());
 
         return $invoice;
     }
 
-    public function update(InvoiceRequest $request,$invoice_id)
+    public function update(InvoiceRequest $request, $invoice_id)
     {
+        $this->authorize('IsAllowed', [Invoice::class, 'employee']);
+
         $invoice = Invoice::find($invoice_id);
 
-        $this->authorize('isOwner', $invoice);
+        $this->authorize('IsInvoiceOwner', $invoice);
 
         $updated_invoice = Invoice::where('id', $invoice_id)->update($request->validated());
 
@@ -48,22 +54,15 @@ class InvoicesController extends Controller
 
     public function destroy($invoice_id)
     {
+        $this->authorize('IsAllowed', [Invoice::class, 'employee']);
+
         $invoice = Invoice::find($invoice_id);
 
-        $this->authorize('isInvoiceOwner', $invoice);
+        $this->authorize('IsInvoiceOwner', $invoice);
 
         $deleted_invoice = Invoice::where('id', $invoice_id)->delete();
 
         return $deleted_invoice;
-    }
-
-    public function getInvoicesForBusiness($business_id)
-    {
-        $this->authorize('IsBusinessOwner' , [Invoice::class , $business_id]);
-
-        $invoices = Invoice::where('business_id', $business_id)->get();
-
-        return $invoices;
     }
 
 }

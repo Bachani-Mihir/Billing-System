@@ -93,7 +93,7 @@ it('can edit the invoice', function () {
     $updated_invoice->assertStatus(200); // Expecting a successful update response
 
     // Ensure the status is paid in the invoice
-    expect(Invoice::where('invoice_number' , 'INV-001')->where('status' , 'paid')->exists())->toBeTrue();
+    expect(Invoice::where('invoice_number', 'INV-001')->where('status', 'paid')->exists())->toBeTrue();
 });
 
 it('can not edit the invoice', function () {
@@ -133,7 +133,7 @@ it('can not edit the invoice', function () {
     $updated_invoice->assertStatus(403); // Expecting a not successful update response
 
     // Ensure the status is paid in the invoice
-    expect(Invoice::where('invoice_number' , 'INV-001')->where('status' , 'paid')->exists())->toBeFalse();
+    expect(Invoice::where('invoice_number', 'INV-001')->where('status', 'paid')->exists())->toBeFalse();
 });
 
 it('can delete the invoice', function () {
@@ -164,7 +164,7 @@ it('can delete the invoice', function () {
     $deleted_invoice->assertStatus(200); // Expecting a successful update response
 
     // Ensure the status is paid in the invoice
-    expect(Invoice::where('id' , $invoice_id)->exists())->toBeFalse();
+    expect(Invoice::where('id', $invoice_id)->exists())->toBeFalse();
 });
 
 it('can not delete the invoice', function () {
@@ -197,7 +197,7 @@ it('can not delete the invoice', function () {
     $deleted_invoice->assertStatus(403); // Expecting a not successful update response
 
     // Ensure the status is paid in the invoice
-    expect(Invoice::where('id' , $invoice_id)->exists())->toBeTrue();
+    expect(Invoice::where('id', $invoice_id)->exists())->toBeTrue();
 });
 
 it('can only accessed by the InvoiceOwner', function () {
@@ -263,12 +263,12 @@ it('can not be accessed except the InvoiceOwner', function () {
     $fetched_invoice->assertStatus(403); // Expecting a not successful update response
 
     // Ensure the status is paid in the invoice
-    $this->assertNotEquals($invoice_creator_2->id,$invoice->user_id);
+    $this->assertNotEquals($invoice_creator_2->id, $invoice->user_id);
 });
 
 it('can access all the invoices', function () {
     // Arrange
-    $user = User::factory()->create(['role' => 'admin']);
+    $user = User::factory()->create(['role' => 'owner']);
 
     $invoice_creator_1 = User::factory()->create(['role' => 'employee']);
 
@@ -307,5 +307,3 @@ it('can access all the invoices', function () {
     $all_invoices->assertStatus(200); // Expecting a not successful update response
 
 });
-
-

@@ -36,8 +36,6 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('invoices', InvoicesController::class);
-
-    Route::get('invoices/businesses/{business}', [InvoicesController::class, 'getInvoicesForBusiness']);
 });
 
 // Users
